@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b13">
+  <meta name="description" content="Your personal AI creation studio">
+  <link rel="manifest" href="manifest.json">
+  <title>MY AI STUDIO</title>
+  <style>
+    :root{--bg:#090b13;--panel:#121625;--panel2:#191f31;--line:#293149;--text:#f5f7ff;--muted:#9ba5bd;--accent:#9b7cff;--cyan:#5bd8e8}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 80% 0%,#24204a 0,transparent 32%),var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+    .wrap{max-width:900px;margin:auto;padding:22px 16px 100px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:26px}
+    .brand{font-weight:900;letter-spacing:1.5px;font-size:19px}.brand span{color:var(--accent)}.status{font-size:11px;color:#9ce8c0;border:1px solid #285943;background:#10261d;padding:6px 10px;border-radius:30px}
+    .hero{padding:24px 20px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,#1b2040,#121625 65%);margin-bottom:22px}
+    .eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2px}.hero h1{font-size:clamp(28px,7vw,42px);line-height:1.08;margin:10px 0}.hero p{color:var(--muted);line-height:1.6;margin:0}
+    .section-title{font-size:17px;margin:24px 0 12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .tile{min-height:145px;padding:17px;border-radius:18px;border:1px solid var(--line);background:var(--panel);color:inherit;text-align:left;cursor:pointer}
+    .tile:active{transform:scale(.985)}.ico{font-size:25px;margin-bottom:13px}.tile strong{display:block;font-size:15px}.tile small{display:block;color:var(--muted);margin-top:5px;line-height:1.4}
+    .wide{grid-column:1/-1;min-height:105px}.panel{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:17px;margin-top:12px}
+    label{display:block;color:var(--muted);font-size:12px;margin:12px 0 7px}input,textarea,select{width:100%;background:#0c1020;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:13px;font:inherit;outline:none}
+    textarea{min-height:100px;resize:vertical}button.primary{border:0;border-radius:12px;padding:13px 16px;background:linear-gradient(90deg,var(--accent),#6e8cff);color:white;font-weight:800;width:100%;margin-top:12px}
+    .note{color:var(--muted);font-size:12px;line-height:1.5}.hidden{display:none}.item{padding:11px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.item:last-child{border:0}
+    nav{position:fixed;bottom:0;left:0;right:0;background:#0c101deb;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 4px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
+    nav button{background:none;border:0;color:var(--muted);font-size:11px;padding:5px}.active{color:var(--cyan)}
+    .back{background:transparent;border:1px solid var(--line);color:var(--text);padding:9px 12px;border-radius:10px;margin-bottom:12px}
+    @media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.wide{grid-column:span 1}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div class="brand">MY <span>AI</span> STUDIO</div><div class="status">● PERSONAL WORKSPACE</div></header>
+  <main id="home">
+    <section class="hero"><div class="eyebrow">YOUR CREATIVE UNIVERSE</div><h1>Create without<br>limits.</h1><p>Your personal space for AI ideas, images, videos and stories. Start with a prompt and build something amazing.</p></section>
+    <h2 class="section-title">Creative tools</h2>
+    <div class="grid">
+      <button class="tile" onclick="openTool('chat')"><div class="ico">💬</div><strong>AI Chat</strong><small>Ideas, scripts and prompts</small></button>
+      <button class="tile" onclick="openTool('image')"><div class="ico">🎨</div><strong>Image Studio</strong><small>Posters, thumbnails and art</small></button>
+      <button class="tile" onclick="openTool('video')"><div class="ico">🎬</div><strong>Video Studio</strong><small>Text-to-video workflows</small></button>
+      <button class="tile" onclick="openTool('voice')"><div class="ico">🎙️</div><strong>Voice Studio</strong><small>Narration and dialogue</small></button>
+      <button class="tile wide" onclick="showCreations()"><div class="ico">🗂️</div><strong>My Creations</strong><small>Your saved prompts and project notes</small></button>
+    </div>
+    <section class="panel"><strong>Build status</strong><p class="note">Version 0.1 — dashboard ready. AI generation engines are not connected yet. We will add free/open-source options in the next steps.</p></section>
+  </main>
+
+  <section id="tool" class="hidden">
+    <button class="back" onclick="goHome()">← Dashboard</button>
+    <h2 id="toolTitle">Studio</h2><p id="toolDesc" class="note"></p>
+    <div class="panel">
+      <label for="prompt">Your prompt / idea</label>
+      <textarea id="prompt" placeholder="Describe what you want to create..."></textarea>
+      <label for="kind">Project type</label>
+      <select id="kind"><option>Story idea</option><option>YouTube thumbnail</option><option>Image prompt</option><option>Video scene</option><option>Voice-over script</option><option>Other</option></select>
+      <button class="primary" onclick="savePrompt()">Save to My Creations</button>
+      <p class="note">This first version saves your prompt on this device. It does not generate an image, video or voice yet.</p>
+    </div>
+  </section>
+
+  <section id="creations" class="hidden">
+    <button class="back" onclick="goHome()">← Dashboard</button><h2>My Creations</h2><p class="note">Saved locally in this browser on your phone.</p>
+    <div class="panel" id="savedList"></div>
+    <button class="primary" onclick="clearCreations()">Clear saved items</button>
+  </section>
+</div>
+<nav>
+  <button class="active" onclick="goHome()">⌂<br>Home</button>
+  <button onclick="openTool('image')">▧<br>Image</button>
+  <button onclick="openTool('video')">▶<br>Video</button>
+  <button onclick="showCreations()">▤<br>Saved</button>
+</nav>
+<script>
+const titles={chat:["AI Chat","Plan stories, write scripts and prepare prompts."],image:["Image Studio","Prepare image prompts and save your creative briefs."],video:["Video Studio","Plan scenes and save text-to-video ideas."],voice:["Voice Studio","Prepare narration and dialogue scripts."]};
+function hideAll(){document.getElementById('home').classList.add('hidden');document.getElementById('tool').classList.add('hidden');document.getElementById('creations').classList.add('hidden')}
+function openTool(k){hideAll();document.getElementById('tool').classList.remove('hidden');document.getElementById('toolTitle').textContent=titles[k][0];document.getElementById('toolDesc').textContent=titles[k][1];document.getElementById('kind').value=k==='image'?'Image prompt':k==='video'?'Video scene':k==='voice'?'Voice-over script':'Story idea'}
+function goHome(){hideAll();document.getElementById('home').classList.remove('hidden')}
+function getItems(){try{return JSON.parse(localStorage.getItem('myai_items')||'[]')}catch(e){return []}}
+function savePrompt(){let p=document.getElementById('prompt').value.trim();if(!p){alert('Please enter your idea first.');return}let items=getItems();items.unshift({prompt:p,kind:document.getElementById('kind').value,date:new Date().toLocaleString()});localStorage.setItem('myai_items',JSON.stringify(items));document.getElementById('prompt').value='';alert('Saved on this device!');}
+function showCreations(){hideAll();document.getElementById('creations').classList.remove('hidden');let box=document.getElementById('savedList'),items=getItems();box.innerHTML=items.length?items.map(x=>'<div class="item"><strong>'+escapeHtml(x.kind)+'</strong><p>'+escapeHtml(x.prompt)+'</p><small class="note">'+escapeHtml(x.date)+'</small></div>').join(''):'<p class="note">No saved items yet. Save a prompt from any studio.</p>'}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function clearCreations(){if(confirm('Delete all locally saved items?')){localStorage.removeItem('myai_items');showCreations()}}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+</script>
+</body></html>
