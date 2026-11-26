@@ -1,5 +1,4 @@
-
-const CACHE = 'my-ai-studio-v1';
+const CACHE = 'my-ai-studio-v2';
 
 const FILES = [
   './',
@@ -10,6 +9,17 @@ const FILES = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE).then(cache => cache.addAll(FILES))
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== CACHE)
+          .map(key => caches.delete(key))
+      )
+    )
   );
 });
 
